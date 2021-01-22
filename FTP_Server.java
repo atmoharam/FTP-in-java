@@ -1,3 +1,6 @@
+
+package server_side;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -8,12 +11,14 @@ import java.io.PrintWriter;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-public class Server {
-    
-     Server() throws IOException{
-        try(ServerSocket server = new ServerSocket(28000)){
+
+
+
+public class Server_side {
+
+   
+    public static void main(String[] args) throws IOException {
+       try(ServerSocket server = new ServerSocket(28000)){
             Socket client = server.accept();
             try{
                 
@@ -72,8 +77,10 @@ public class Server {
         
            }
       
-        }}
+        }
     
+}
+
 
 
     
