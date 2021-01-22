@@ -1,4 +1,3 @@
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.File;
@@ -43,10 +42,12 @@ public class Server {
                     String request1 = clientReadSource.readUTF();
                     int dummy = 0 ;
                     String request2 = "";
+                    String userName = "";
                     
                     for(int i=0 ; i<8 ; i++){
                         if(request1.equals( dataOnLine[i] )){
                             request2 = dataOnLine[i+1];
+                            userName = request1;
                             dummy=1;
                             break;
                         }
@@ -72,5 +73,8 @@ public class Server {
            }
       
         }}
+    
+
+
     
 
