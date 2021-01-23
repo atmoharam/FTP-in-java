@@ -2,6 +2,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
+import java.util.Vector;
 
 public class server {
 
@@ -65,23 +66,25 @@ public class server {
                 File file2 = new File ( "E:\\FTP\\" + user+"\\" + msg7 );
                 String[] files2 = file2.list ( );
                 clientWriteSource.writeInt ( files2.length );
+                Vector<String> v = new Vector<String> ( 1000 );
                 for ( String string : files2 ) {
                     String ps = string;
                     clientWriteSource.writeUTF ( ps );
+                    v.add ( ps );
                 }
-
                 String msg2 = clientReadSource.readUTF ( );
                 System.out.println ( msg2 );
                 msg7.toLowerCase ( );
                 String msgg = " ";
-                if ( msg7.equals ( "movies" ) ) {
-                    msgg = msg2 + ".mp4";
-                } else if ( ( msg7.contains ( "music" ) ) ) {
-                    msgg = msg2 + ".mp3";
-                } else if ( ( msg7.contains ( "docs" ) ) ) {
-                    msgg = msg2 + ".txt";
-                } else if ( ( msg7.contains ( "image" ) ) ) {
-                    msgg = msg2 + ".jpg";
+
+
+                for ( int  i = 0 ; i< v.size (); i++ )
+                {
+                    if(v.get ( i ).contains ( msg2 ))
+                    {
+                        msgg=v.get ( i );
+                        break;
+                    }
                 }
                 clientWriteSource.writeUTF ( msgg );
                 File file3 = new File ( "E:\\FTP\\" + user + "\\" + msg7 + "\\" + msgg );
