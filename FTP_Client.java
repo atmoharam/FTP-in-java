@@ -66,29 +66,32 @@ public class client {
                         System.out.println ( ss2 );
                         continue;
                     }
-                    l = ServerReadSource.readInt ( );
-                    String h = ServerReadSource.readUTF ( );
-                    System.out.println ( h );
-                    for ( int i = 0 ; i < l ; i++ ) {
-                        String d = ServerReadSource.readUTF ( );
-                        System.out.println ( d );
-                    }
-                    String name = in.next ( );
-                    ServerWriteSource.writeUTF ( name );
-                    temp = ServerReadSource.readUTF ( );
-                    if(temp.equals ( "File not exist" )) {
-                        System.out.println ( temp );
-                        continue;
-                    }
-                    System.out.println ( ServerReadSource.readUTF ( ) );
-                    File DownloadedFile = new File ( "D:\\ftp2\\" + temp );
-                    FileOutputStream FileWriter = new FileOutputStream ( DownloadedFile );
-                    DataInputStream DataDownloaded = new DataInputStream ( socket2.getInputStream ( ) );
-                    int length = DataDownloaded.readInt ( );
-                    if ( length > 0 ) {
-                        byte[] DataBytes = new byte[ length ];
-                        DataDownloaded.readFully ( DataBytes, 0, DataBytes.length );
-                        FileWriter.write ( DataBytes );
+                    else {
+
+                        l = ServerReadSource.readInt ( );
+                        String h = ServerReadSource.readUTF ( );
+                        System.out.println ( h );
+                        for ( int i = 0 ; i < l ; i++ ) {
+                            String d = ServerReadSource.readUTF ( );
+                            System.out.println ( d );
+                        }
+                        String name = in.next ( );
+                        ServerWriteSource.writeUTF ( name );
+                        temp = ServerReadSource.readUTF ( );
+                        if ( temp.equals ( "File not exist" ) ) {
+                            System.out.println ( temp );
+                            continue;
+                        }
+                        System.out.println ( ServerReadSource.readUTF ( ) );
+                        File DownloadedFile = new File ( "D:\\ftp2\\" + temp );
+                        FileOutputStream FileWriter = new FileOutputStream ( DownloadedFile );
+                        DataInputStream DataDownloaded = new DataInputStream ( socket2.getInputStream ( ) );
+                        int length = DataDownloaded.readInt ( );
+                        if ( length > 0 ) {
+                            byte[] DataBytes = new byte[ length ];
+                            DataDownloaded.readFully ( DataBytes, 0, DataBytes.length );
+                            FileWriter.write ( DataBytes );
+                        }
                     }
                 }
             }
