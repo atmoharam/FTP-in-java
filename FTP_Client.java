@@ -2,7 +2,6 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.util.Scanner;
-
 public class client {
     public static void main ( String[] args ) throws IOException {
         String temp;
@@ -28,10 +27,8 @@ public class client {
                 ServerReadSource.close ( );
                 return;
             }
-
             UserName = in.next ( );
             ServerWriteSource.writeUTF ( UserName );
-
             message = ServerReadSource.readUTF ( );
             if ( message.equals ( "Login Failed and the connection will terminate" ) ) {
                 socket.close ( );
@@ -53,7 +50,6 @@ public class client {
                         ServerReadSource.close ( );
                         break;
                     }
-
                     int l = ServerReadSource.readInt ( );     //to store n.o dirs
                     String m = ServerReadSource.readUTF ( );
                     System.out.println ( m );
@@ -95,7 +91,6 @@ public class client {
                         FileWriter.write ( DataBytes );
                     }
                 }
-
             }
         }
     }
