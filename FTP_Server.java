@@ -3,9 +3,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.Scanner;
 import java.util.Vector;
-
 public class server {
-
     public static void main ( String[] args ) throws IOException {
         ServerSocket server = new ServerSocket ( 28000 );
         ServerSocket serv = new ServerSocket ( 25188 );
@@ -16,7 +14,6 @@ public class server {
             nee.start ( );
         }
     }
-
 
     static class ClientConnection extends Thread {
         Socket ClientSocket;
@@ -30,14 +27,14 @@ public class server {
 
         public void run () {
             try {
-                String[] dataOnLine = new String[ 9 ];
+                Vector<String> dataOnLine = new Vector<> ( 1 );
                 int line = 1;
                 try {
                     File myObj = new File ( "E:\\Data_of_users.txt" ); // craeted a file object named FileName
                     Scanner MyReader = new Scanner ( myObj );
                     while ( MyReader.hasNextLine ( ) ) {
                         String info = MyReader.nextLine ( );
-                        dataOnLine[ line ] = info;
+                        dataOnLine.add ( info ) ;
                         line++;
                     }
                 } catch ( FileNotFoundException e ) {
@@ -51,8 +48,8 @@ public class server {
                     int dummy = 0;
                     String request2 = "";
                     for ( int i = 0 ; i < 8 ; i++ ) {
-                        if ( request1.equals ( dataOnLine[ i ] ) ) {
-                            request2 = dataOnLine[ i + 1 ];
+                        if (request1.equals ( dataOnLine.get ( i ) ) ) {
+                            request2 = dataOnLine.get (  i + 1);
                             dummy = 1;
                             break;
                         }
@@ -65,12 +62,14 @@ public class server {
                     request1 = clientReadSource.readUTF ( );
                     if ( request1.equals ( request2 ) ) {
                         clientWriteSource.writeUTF ( "Login Successfully" );
+                        System.out.println ("User: " +user+" is connected");
                     } else {
                         clientWriteSource.writeUTF ( "Login Failed and the connection will terminate" );
                     }
                 while ( true ) {
+                    clientWriteSource.writeUTF ( "Enter ( show my directories / close )" );
                     String msg = clientReadSource.readUTF ( );
-                    System.out.println ( msg );
+                    System.out.println ( "User "+user+" entered " + msg );
                     if(msg.equals ( "close" ))
                     {
                         System.out.println ( "client " +user+ " terminated" );
@@ -80,6 +79,7 @@ public class server {
                     File file = new File ( "E:\\FTP\\" + user );
                     String[] files = file.list ( );
                     clientWriteSource.writeInt ( files.length );
+                    clientWriteSource.writeUTF ( "the existing directories: ");
                     for ( String string : files ) {
                         String ps = string;
                         clientWriteSource.writeUTF ( ps );
@@ -88,15 +88,14 @@ public class server {
                     File file2 = new File ( "E:\\FTP\\" + user + "\\" + msg7 );
                     String[] files2 = file2.list ( );
                     clientWriteSource.writeInt ( files2.length );
-                    Vector<String> v = new Vector<String> ( 8 );
+                    Vector<String> v = new Vector<String> ( 1 );
+                    clientWriteSource.writeUTF ( "the existing files: ");
                     for ( String string : files2 ) {
                         String ps = string;
                         clientWriteSource.writeUTF ( ps );
                         v.add ( ps );
                     }
                     String msg2 = clientReadSource.readUTF ( );
-                    System.out.println ( msg2 );
-                    msg7.toLowerCase ( );
                     String msgg = " ";
                     for ( int i = 0 ; i < v.size ( ) ; i++ ) {
                         if ( v.get ( i ).contains ( msg2 ) ) {
@@ -105,21 +104,21 @@ public class server {
                         }
                     }
                     clientWriteSource.writeUTF ( msgg );
+
+                    System.out.println ( "User "+user+" download file: "+msgg );
+
                     File file3 = new File ( "E:\\FTP\\" + user + "\\" + msg7 + "\\" + msgg );
                     FileInputStream filereader = new FileInputStream ( file3 );
                     byte Databytes[] = new byte[ ( int ) file3.length ( ) ];
                     filereader.read ( Databytes );
+                    clientWriteSource.writeUTF ( "File: "+msgg+" is downloaded" );
                     try  {
                         DataOutputStream dataout = new DataOutputStream ( serv.getOutputStream ( ) );
                         dataout.writeInt ( Databytes.length );
                         dataout.write ( Databytes );
-
-//                        dataout.close ( );
                     } catch ( Exception e ) {
                         System.out.println ( "Error" );
-                        //ClientSocket.close ( );
                     }
-
                 }
             }
             catch ( Exception e )
