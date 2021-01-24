@@ -71,6 +71,12 @@ public class server {
                 while ( true ) {
                     String msg = clientReadSource.readUTF ( );
                     System.out.println ( msg );
+                    if(msg.equals ( "close" ))
+                    {
+                        System.out.println ( "client " +user+ " terminated" );
+                        break;
+                    }
+
                     File file = new File ( "E:\\FTP\\" + user );
                     String[] files = file.list ( );
                     clientWriteSource.writeInt ( files.length );
