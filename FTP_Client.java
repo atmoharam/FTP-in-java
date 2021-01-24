@@ -23,17 +23,22 @@ public class client {
                 ServerWriteSource.writeUTF ( UserName );
                 message = ServerReadSource.readUTF ( );
                 System.out.println ( message );
-                //socket.close ();
-
             while ( true ) {
+                String ko =ServerReadSource.readUTF ();
+                System.out.println ( ko );
                 String sd = in.next ( );
                 ServerWriteSource.writeUTF ( sd );
                 if ( sd.equals ( "close" ) ) {
-                    //socket.close ();
+                    socket.close ();
+                    socket2.close ();
+                    ServerWriteSource.close ();
+                    ServerReadSource.close ();
                     break;
                 }
 
                 int l = ServerReadSource.readInt ( );     //to store n.o dirs
+                String m = ServerReadSource.readUTF ( );
+                System.out.println ( m );
                 for ( int i = 0 ; i < l ; i++ ) {
                     String d = ServerReadSource.readUTF ( );
                     System.out.println ( d );
@@ -41,6 +46,8 @@ public class client {
                 String kind = in.next ( );
                 ServerWriteSource.writeUTF ( kind );
                 l = ServerReadSource.readInt ( );
+                String h= ServerReadSource.readUTF () ;
+                System.out.println ( h );
                 for ( int i = 0 ; i < l ; i++ ) {
                     String d = ServerReadSource.readUTF ( );
                     System.out.println ( d );
@@ -48,9 +55,7 @@ public class client {
                 String name = in.next ( );
                 ServerWriteSource.writeUTF ( name );
                 temp = ServerReadSource.readUTF ( );
-//                socket.close ( );
-//                ServerReadSource.close ( );
-//                ServerWriteSource.close ( );
+                System.out.println ( ServerReadSource.readUTF ( ) );
                 File DownloadedFile = new File ( "D:\\ftp2\\" + temp );
                 FileOutputStream FileWriter = new FileOutputStream ( DownloadedFile );
                 DataInputStream DataDownloaded = new DataInputStream ( socket2.getInputStream ( ) );
@@ -60,9 +65,8 @@ public class client {
                     DataDownloaded.readFully ( DataBytes, 0, DataBytes.length );
                     FileWriter.write ( DataBytes );
                 }
-//                FileWriter.close ( );
-//                DataDownloaded.close ( );
             }
+
         }
     }
 }
