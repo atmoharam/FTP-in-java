@@ -98,6 +98,10 @@ public class server {
                             clientWriteSource.writeUTF ( "This directory is not found" );
                             continue;
                         }
+                        else {
+                            clientWriteSource.writeUTF ( "no thing" );
+
+                        }
 
                         File file2 = new File ( "E:\\FTP\\" + user + "\\" + msg7 );
                         String[] files2 = file2.list ( );
